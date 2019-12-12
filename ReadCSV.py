@@ -3,6 +3,7 @@ import csv
 
 class ReadBehaviorFile:
     def __init__(self, file_name):
+        #self.data_partition = data_partition
         with open(file_name, 'r') as csvfile:
             # creating a csv reader object
             csv_input = csv.reader(csvfile)
