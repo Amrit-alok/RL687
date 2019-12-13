@@ -13,8 +13,8 @@ def problem4():
 
         # for trials in range(10):
         NPARAMS = 4  # make this a 100-dimensinal problem.
-        NPOPULATION = 75  # use population size of 101.
-        MAX_ITERATION = 20
+        NPOPULATION = 50  # use population size of 101.
+        MAX_ITERATION = 10
         cmaes = CMAES(NPARAMS,
                       popsize=NPOPULATION,
                       weight_decay=0.0,
