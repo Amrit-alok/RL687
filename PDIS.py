@@ -10,12 +10,15 @@ class PDIS:
     def pi_b(self):
         return self._pi_b
 
-    def __init__(self, behavior_file, data_partition):
+    def __init__(self, behavior_file, start_index, end_index):
+        data_partition = end_index-start_index
+        self.start_index = start_index
+        self.end_index = end_index
         self.data_partition = int(data_partition * 0.6)
         print("candidate_data", self.data_partition)
-        self.behavior_data = ReadBehaviorFile(behavior_file)
+        self.behavior_data = ReadBehaviorFile(behavior_file,start_index,end_index)
         self.theta_b = np.asarray([0.01, -0.01, 1, 1])
-        self.delta = 0.02
+        self.delta = 0.001
         self.candidate_pdis = 0
         self.safety_test_size = int(data_partition * 0.4)
         print("safety_data", self.safety_test_size)
@@ -30,6 +33,7 @@ class PDIS:
     def calculate_pi_b(self):
         behavior_policy = [[]]
         print("Pi_b is being calculated")
+        # for trajectory in self.behavior_data.trajectories[self.start_index+1:self.end_index + 1]:
         for trajectory in self.behavior_data.trajectories[1:self.data_partition + self.safety_test_size + 1]:
             pi_b = []
             probabilities = 1
@@ -43,7 +47,7 @@ class PDIS:
             # print("For trajectory", trajectory, ":pi_b is: ", pi_b)
         self.pi_b = np.array(behavior_policy[1:])
         print("pi_b is calculated")
-        # print("size of pi_b:", len(self.pi_b))
+        print("size of pi_b:", len(self.pi_b))
 
     def calculate_PDIS_per_episode(self, behavior_history, theta_e, pi_b):
         pi_e = 1
@@ -62,7 +66,9 @@ class PDIS:
         pdis_history = []
         # self.calculate_pi_b()
         # print(self.pi_b)
+        # count = self.start_index
         count = 0
+        # for history in self.behavior_data.trajectories[self.start_index+1:self.start_index + self.data_partition + 1]:
         for history in self.behavior_data.trajectories[1:self.data_partition + 1]:
             pdis_per_episdode = self.calculate_PDIS_per_episode(history, theta_e, self.pi_b[count])
             pdis_history.append(pdis_per_episdode)
@@ -83,7 +89,8 @@ class PDIS:
             np.divide(self.standard_deviation_pdis(), np.sqrt(safety_test_size))) * stats.t.ppf(1 - self.delta,
                                                                                                 safety_test_size - 1))
         if upper_limit >= self.c:
-            return self.candidate_pdis
+            return upper_limit
+            # return self.candidate_pdis
         else:
             return -100000+upper_limit
 
@@ -97,7 +104,9 @@ class PDIS:
         # print("Theta_e for safety", theta_e)
         pdis_history_safety = []
         start = self.data_partition + 1
+        # start = self.start_index+self.data_partition + 1
         end = self.data_partition + self.safety_test_size + 1
+        # end = self.end_index + 1
         count = start
         for history in self.behavior_data.trajectories[start:end]:
             # print("count is:", count)
@@ -131,7 +140,7 @@ class PDIS:
         print("safety_test_estimate:", self.safety_pdis)
         if b >= self.c:
             print("safety test passed")
-            np.savetxt("policy"+str(i)+".csv", theta_e)
+            #np.savetxt("policy"+str(i)+".csv", theta_e)
         else:
             print("safety test failed")
 
@@ -140,7 +149,11 @@ class PDIS:
         self._pi_b = value
 
 
-# pdis = PDIS("data.csv", 200000)
+# pdis = PDIS("data.csv", 0,20)
+# pdis.calculate_pi_b()
+# print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
+# print("safet_test", pdis.execute_safety_test([2.06836668, -1.40374511, -2.26690564, -0.70637846]))
+# pdis = PDIS("data.csv", 20,30)
 # pdis.calculate_pi_b()
 # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
 # print("safet_test", pdis.execute_safety_test([2.06836668, -1.40374511, -2.26690564, -0.70637846]))

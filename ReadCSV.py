@@ -2,7 +2,7 @@ import csv
 
 
 class ReadBehaviorFile:
-    def __init__(self, file_name):
+    def __init__(self, file_name, start, end):
         #self.data_partition = data_partition
         with open(file_name, 'r') as csvfile:
             # creating a csv reader object
@@ -15,6 +15,7 @@ class ReadBehaviorFile:
         self.num_episodes = int(self.data[4][0])
         self.policy = self.data[200005]
         self.trajectories = [[]]
-        for trajectory in self.data[5:200005]:
+        # for trajectory in self.data[5:200005]:
+        for trajectory in self.data[start+5:end+5]:
             self.trajectories.append(list(map(float, trajectory)))
 

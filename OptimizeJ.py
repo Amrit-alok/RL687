@@ -4,11 +4,14 @@ from es import CMAES
 
 
 def problem4():
-    data_parition = 200000
-    pdis = PDIS(behavior_file="data.csv", data_partition=data_parition)
-    pdis.calculate_pi_b()
+    # data_parition = 100000
+    for trials in range(20):
+        end = 10000 * (trials + 1)
+        start = 10000 * trials
+        pdis = PDIS(behavior_file="data.csv", start_index=start, end_index=end)
+        pdis.calculate_pi_b()
 
-    for trials in range(10):
+        # for trials in range(10):
         NPARAMS = 4  # make this a 100-dimensinal problem.
         NPOPULATION = 50  # use population size of 101.
         MAX_ITERATION = 4
@@ -19,7 +22,7 @@ def problem4():
                       )
 
         history = []
-        print("candidate_data: ",data_parition,"Population: ",NPOPULATION, "Max Iteration: ",MAX_ITERATION)
+        print("candidate_data: ", start, end, "Population: ", NPOPULATION, "Max Iteration: ", MAX_ITERATION)
         for j in range(MAX_ITERATION):
             solutions = cmaes.ask()
             fitness_list = np.zeros(cmaes.popsize)
@@ -33,7 +36,7 @@ def problem4():
         print("local optimum discovered by solver:\n", result[0])
         print("fitness score at this local optimum:", result[1])
         # return history
-        pdis.execute_safety_test(result[0],trials)
+        pdis.execute_safety_test(result[0], trials)
 
 
 problem4()
