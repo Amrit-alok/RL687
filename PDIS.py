@@ -11,19 +11,19 @@ class PDIS:
         return self._pi_b
 
     def __init__(self, behavior_file, start_index, end_index):
-        data_partition = end_index-start_index
+        data_partition = end_index - start_index
         self.start_index = start_index
         self.end_index = end_index
         self.data_partition = int(data_partition * 0.6)
         print("candidate_data", self.data_partition)
-        self.behavior_data = ReadBehaviorFile(behavior_file,start_index,end_index)
+        self.behavior_data = ReadBehaviorFile(behavior_file, start_index, end_index)
         self.theta_b = np.asarray([0.01, -0.01, 1, 1])
         self.delta = 0.001
         self.candidate_pdis = 0
         self.safety_test_size = int(data_partition * 0.4)
         print("safety_data", self.safety_test_size)
         self.safety_pdis = 0
-        self.c = 2*1.028285376929881
+        self.c = 2 * 1.028285376929881
         self.candidate_pdis_history = np.array([])
         self.safety_pdis_history = np.array([])
         self.linear_softmax = LinearSoftmax(self.behavior_data.num_action, self.behavior_data.fourier_order,
@@ -92,7 +92,7 @@ class PDIS:
             return upper_limit
             # return self.candidate_pdis
         else:
-            return -100000+upper_limit
+            return -100000 + upper_limit
 
     def standard_deviation_pdis(self):
         return np.std(self.candidate_pdis_history)
@@ -128,7 +128,7 @@ class PDIS:
         # pdis_for_safety = self.safety_pdis
         # return np.sqrt(np.sum((pdis_list - pdis_for_safety) ** 2) / (len(pdis_list) - 1))
 
-    def execute_safety_test(self, theta_e,i):
+    def execute_safety_test(self, theta_e, i):
         # print("safety theta", theta_e)
         print("Executing safety test")
         self.estimate_J_theta_safety(theta_e)
@@ -140,7 +140,7 @@ class PDIS:
         print("safety_test_estimate:", self.safety_pdis)
         if b >= self.c:
             print("safety test passed")
-            #np.savetxt("policy"+str(i)+".csv", theta_e)
+            # np.savetxt("policy"+str(i)+".csv", theta_e)
         else:
             print("safety test failed")
 
@@ -149,10 +149,38 @@ class PDIS:
         self._pi_b = value
 
 
-# pdis = PDIS("data.csv", 0,20)
-# pdis.calculate_pi_b()
+pdis = PDIS("data.csv", 120000, 200000)
+pdis.calculate_pi_b()
 # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
-# print("safet_test", pdis.execute_safety_test([2.06836668, -1.40374511, -2.26690564, -0.70637846]))
+array = [
+    [-1.48810483, -5.8838954, -6.66486254, 2.50146831],
+    [4.04246036, -4.11768224, -1.05767587, 4.08253872],
+    [-3.79293304, -1.92418096, -8.56187103, 5.43071975],
+    [2.14252243, -4.820573, -2.89702609, 3.2813018],
+    [4.12973742, -3.45175617, -0.65938406, 4.04142912],
+    [2.1619701, -2.45386902, -1.03488262, 4.34338135],
+    [2.22497536, -22.64193402, -15.81590115, 10.73880119],
+    [1.13819907, -4.85300822, -2.16992484, 1.14013321],
+    [2.20230796, -4.14083396, -2.24512397, 4.02302285],
+    [0.31500172, 8.45417112, -14.55203614, -13.78692092],
+    [25.52102725, 42.39934163, -19.87464904, -49.36815996],
+    [6.08451293, 21.21244758, -14.02773664, -17.16182465],
+    [-12.20894002, 13.98214037, -34.35392966, -23.45040965],
+    [-17.35728131, -3.54574772, -40.00763546, -40.36229815],
+    [39.86646796, 6.43106706, -1.9504568, -76.61021066],
+    [4.69316609, 0.86241457, -5.32928995, -12.38306742],
+    [20.96971486, 23.25397895, -19.00666044, -33.50128026],
+    [10.22528905, 8.28499955, -0.93434349, -9.96264375],
+    [0.91229022, 18.48903157, -22.46971372, -21.14665856],
+    [4.1653161, 14.7216328, -5.1545595, -1.4765127],
+    [10.56013114, -0.36749792, -0.78660299, -19.85134882],
+    [9.19329064, 24.1841517, -8.77129445, -1.78425686],
+    [15.29551905, -10.76655494, -32.21698019, -5.37469248],
+    [9.09883384, 25.43011971, -8.00497706, -3.59536647],
+    [1.90084407, -3.95114143, -3.54221692, 3.44881259]]
+
+for theta_e in array:
+    print("safet_test", pdis.execute_safety_test(theta_e))
 # pdis = PDIS("data.csv", 20,30)
 # pdis.calculate_pi_b()
 # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
