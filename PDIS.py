@@ -149,7 +149,7 @@ class PDIS:
         self._pi_b = value
 
 
-pdis = PDIS("data.csv", 120000, 200000)
+pdis = PDIS("data.csv", 0, 200000)
 pdis.calculate_pi_b()
 # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
 array = [
@@ -178,9 +178,10 @@ array = [
     [15.29551905, -10.76655494, -32.21698019, -5.37469248],
     [9.09883384, 25.43011971, -8.00497706, -3.59536647],
     [1.90084407, -3.95114143, -3.54221692, 3.44881259]]
-
+i = 1
 for theta_e in array:
-    print("safet_test", pdis.execute_safety_test(theta_e))
+    print("safet_test for theta_e", theta_e, pdis.execute_safety_test(theta_e, i))
+    i += 1
 # pdis = PDIS("data.csv", 20,30)
 # pdis.calculate_pi_b()
 # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
