@@ -18,7 +18,7 @@ def problem4():
         cmaes = CMAES(NPARAMS,
                       popsize=NPOPULATION,
                       weight_decay=0.0,
-                      sigma_init=2.0
+                      sigma_init=0.5
                       )
         history = []
         print("candidate_data: ", start, end, "Population: ", NPOPULATION, "Max Iteration: ", MAX_ITERATION)
