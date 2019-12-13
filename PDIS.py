@@ -129,8 +129,7 @@ class PDIS:
         # return np.sqrt(np.sum((pdis_list - pdis_for_safety) ** 2) / (len(pdis_list) - 1))
 
     def execute_safety_test(self, theta_e, i):
-        print("safety theta for row:", i, " ", theta_e)
-        print("Executing safety test")
+        print("Executing safety theta for row:", i, " ", theta_e)
         self.estimate_J_theta_safety(theta_e)
         b = self.safety_pdis - (
                 np.divide(self.standard_deviation_safety(), np.sqrt(self.safety_test_size)) * stats.t.ppf(
