@@ -5,7 +5,7 @@ from es import CMAES
 
 def problem4():
     # data_parition = 100000
-    for trials in range(1):
+    for trials in range(2):
         start = 100000 * trials
         end = 100000 * (trials + 1)
         pdis = PDIS(behavior_file="data.csv", start_index=start, end_index=end)
