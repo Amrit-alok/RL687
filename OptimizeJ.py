@@ -5,22 +5,21 @@ from es import CMAES
 
 def problem4():
     # data_parition = 100000
-    for trials in range(20):
-        end = 10000 * (trials + 1)
-        start = 10000 * trials
+    for trials in range(2):
+        start = 100000 * trials
+        end = 100000 * (trials + 1)
         pdis = PDIS(behavior_file="data.csv", start_index=start, end_index=end)
         pdis.calculate_pi_b()
 
         # for trials in range(10):
         NPARAMS = 4  # make this a 100-dimensinal problem.
-        NPOPULATION = 50  # use population size of 101.
-        MAX_ITERATION = 4
+        NPOPULATION = 75  # use population size of 101.
+        MAX_ITERATION = 20
         cmaes = CMAES(NPARAMS,
                       popsize=NPOPULATION,
                       weight_decay=0.0,
                       sigma_init=2.0
                       )
-
         history = []
         print("candidate_data: ", start, end, "Population: ", NPOPULATION, "Max Iteration: ", MAX_ITERATION)
         for j in range(MAX_ITERATION):
