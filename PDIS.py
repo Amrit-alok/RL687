@@ -18,7 +18,7 @@ class PDIS:
         print("candidate_data", self.data_partition)
         self.behavior_data = ReadBehaviorFile(behavior_file, start_index, end_index)
         self.theta_b = np.asarray([0.01, -0.01, 1, 1])
-        self.delta = 0.5 #0.001
+        self.delta = 0.05  # 0.001
         self.candidate_pdis = 0
         self.safety_test_size = int(data_partition * 0.4)
         print("safety_data", self.safety_test_size)
@@ -129,7 +129,7 @@ class PDIS:
         # return np.sqrt(np.sum((pdis_list - pdis_for_safety) ** 2) / (len(pdis_list) - 1))
 
     def execute_safety_test(self, theta_e, i):
-        print("safety theta for", theta_e)
+        print("safety theta for row:", i, " ", theta_e)
         print("Executing safety test")
         self.estimate_J_theta_safety(theta_e)
         b = self.safety_pdis - (
@@ -195,7 +195,7 @@ array = [[-0.10762815309384006, -1.2452739068421796, 4.3334647974302, 5.74272207
          [11.15662500695909, 14.469112474577862, -5.65774665230228, -54.66766150004864]]
 i = 1
 for theta_e in array:
-    print("safet_test for", i, pdis.execute_safety_test(theta_e, i))
+    pdis.execute_safety_test(theta_e, i)
     i += 1
 # pdis = PDIS("data.csv", 20,30)
 # pdis.calculate_pi_b()
