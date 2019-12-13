@@ -18,7 +18,7 @@ class PDIS:
         print("candidate_data", self.data_partition)
         self.behavior_data = ReadBehaviorFile(behavior_file, start_index, end_index)
         self.theta_b = np.asarray([0.01, -0.01, 1, 1])
-        self.delta = 0.05  # 0.001
+        self.delta = 0.001
         self.candidate_pdis = 0
         self.safety_test_size = int(data_partition * 0.4)
         print("safety_data", self.safety_test_size)
@@ -89,8 +89,8 @@ class PDIS:
             np.divide(self.standard_deviation_pdis(), np.sqrt(safety_test_size))) * stats.t.ppf(1 - self.delta,
                                                                                                 safety_test_size - 1))
         if upper_limit >= self.c:
-            return upper_limit
-            # return self.candidate_pdis
+            # return upper_limit
+            return self.candidate_pdis
         else:
             return -100000 + upper_limit
 
@@ -148,15 +148,15 @@ class PDIS:
         self._pi_b = value
 
 
-pdis = PDIS("data.csv", 0, 200000)
-pdis.calculate_pi_b()
-# print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
-array = [[23.662783326536143, 1.2397969774400925, -26.847117793670677, 16.79207792772385],
-         [47.42713777828285, -7.811785380001178, -9.06031905181347, 5.496274550956501]]
-i = 1
-for theta_e in array:
-    pdis.execute_safety_test(theta_e, i)
-    i += 1
+# pdis = PDIS("data.csv", 0, 200000)
+# pdis.calculate_pi_b()
+# # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
+# array = [[23.662783326536143, 1.2397969774400925, -26.847117793670677, 16.79207792772385],
+#          [47.42713777828285, -7.811785380001178, -9.06031905181347, 5.496274550956501]]
+# i = 1
+# for theta_e in array:
+#     pdis.execute_safety_test(theta_e, i)
+#     i += 1
 # pdis = PDIS("data.csv", 20,30)
 # pdis.calculate_pi_b()
 # print("Student_T_Test", pdis.estimate_J_theta_candidate([-4.52376687, 2.71429282, -9.23526859, 8.41318765]))
