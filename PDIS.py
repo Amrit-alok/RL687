@@ -129,7 +129,7 @@ class PDIS:
         # return np.sqrt(np.sum((pdis_list - pdis_for_safety) ** 2) / (len(pdis_list) - 1))
 
     def execute_safety_test(self, theta_e, i):
-        # print("safety theta", theta_e)
+        print("safety theta for", theta_e)
         print("Executing safety test")
         self.estimate_J_theta_safety(theta_e)
         b = self.safety_pdis - (
@@ -137,7 +137,7 @@ class PDIS:
             1 - self.delta, self.safety_test_size - 1))
 
         print("B", b)
-        print("safety_test_estimate:", self.safety_pdis)
+        print("Theta_e_estimate_safety:", self.safety_pdis)
         if b >= self.c:
             print("safety test passed")
             # np.savetxt("policy"+str(i)+".csv", theta_e)
