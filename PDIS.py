@@ -18,7 +18,7 @@ class PDIS:
         print("candidate_data", self.data_partition)
         self.behavior_data = ReadBehaviorFile(behavior_file, start_index, end_index)
         self.theta_b = np.asarray([0.01, -0.01, 1, 1])
-        self.delta = 0.001
+        self.delta = 0.5 #0.001
         self.candidate_pdis = 0
         self.safety_test_size = int(data_partition * 0.4)
         print("safety_data", self.safety_test_size)
