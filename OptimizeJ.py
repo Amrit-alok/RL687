@@ -4,7 +4,7 @@ from es import CMAES
 
 
 def problem4():
-    data_parition = 200000
+    data_parition = 50000
     pdis = PDIS(behavior_file="data.csv", data_partition=data_parition)
     pdis.calculate_pi_b()
 
